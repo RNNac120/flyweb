@@ -1,0 +1,2 @@
+declare const OpenLayers: any;
+
