@@ -1,8 +1,40 @@
+"use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 
 export default function Login() {
+    const [cpf, setCpf] = useState("");
+    const [senha, setSenha] = useState("");
+    const [error, setError] = useState("");
+    const router = useRouter();
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ cpf, senha }),
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                setError(data.error || "Erro desconhecido.");
+                return;
+            }
+
+            const data = await response.json();
+            alert("Login bem-sucedido!");
+            router.push("/home");
+        } catch (error) {
+            console.error("Erro ao fazer login:", error);
+            setError("Erro ao conectar ao servidor.");
+        }
+    };
+
     return (
         <body className="flex flex-col min-h-screen bg-slate-50 dark:bg-sky-900 justify-between">
             <header className="bg-sky-950 text-white top-0 z-10 shadow-lg">
@@ -19,38 +51,53 @@ export default function Login() {
 
             <main className="min-h-fit place-content-center my-20">
                 <div id="login-container" className="shadow-xl mx-auto w-7/12 bg-sky-200 rounded-lg flex flex-row min-w-80 shadow-lg">
-                    <section id="imagem" className="flex shrink-0 w-[500px] hidden xl:block  ">
-                        <Image className="self-start max-w-2xl rounded-l-lg" width={0} height={0} sizes="100vw" style={{ width: '100%', height: 'auto' }} src="/aeroporto.svg"
-                            alt="Desenho de aeroporto" />
+                    <section id="imagem" className="flex shrink-0 w-[500px] hidden xl:block">
+                        <Image
+                            className="self-start max-w-2xl rounded-l-lg"
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            style={{ width: "100%", height: "auto" }}
+                            src="/aeroporto.svg"
+                            alt="Desenho de aeroporto"
+                        />
                     </section>
 
                     <section id="login" className="flex flex-col px-11 py-4 place-content-center mx-auto shrink-0">
                         <div id="login-text text-gray-600" className="text-3xl">
                             <strong className="text-black">Login</strong>
                         </div>
-                        <div className="mb-4">
-                            <label htmlFor="username" className="block text-gray-600">CPF</label>
-                            <input type="text" id="username" name="username"
-                                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label htmlFor="password" className="block text-gray-600">Senha</label>
-                            <input type="password" id="password" name="password"
-                                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                            />
-                        </div>
-                        <div className="mb-4 flex items-center">
-                            <input type="checkbox" id="remember" name="remember" className="text-blue-500" />
-                            <label htmlFor="remember" className="text-gray-600 ml-2">Lembrar credenciais</label>
-                        </div>
-                        <div className="mb-6 text-blue-500">
-                            <a href="#" className="hover:underline">Esqueceu a senha?</a>
-                        </div>
-                        <Link href={"/home"}>
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full">Login</button>
-                        </Link>
-
+                        <form onSubmit={handleSubmit}>
+                            <div className="mb-4">
+                                <label htmlFor="cpf" className="block text-gray-600">CPF</label>
+                                <input
+                                    type="text"
+                                    id="cpf"
+                                    name="cpf"
+                                    value={cpf}
+                                    onChange={(e) => setCpf(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 text-black bg-white"
+                                />
+                            </div>
+                            <div className="mb-4">
+                                <label htmlFor="senha" className="block text-gray-600">Senha</label>
+                                <input
+                                    type="password"
+                                    id="senha"
+                                    name="senha"
+                                    value={senha}
+                                    onChange={(e) => setSenha(e.target.value)}
+                                    className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 text-black bg-white"
+                                />
+                            </div>
+                            {error && <p className="text-red-500">{error}</p>}
+                            <button
+                                type="submit"
+                                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
+                            >
+                                Login
+                            </button>
+                        </form>
                     </section>
                 </div>
             </main>
@@ -73,7 +120,7 @@ export default function Login() {
                     </div>
                 </div>
             </footer>
-
         </body>
     );
 }
+

@@ -8,11 +8,23 @@ datasource db {
 }
 
 model Aviao {
-  matricula           String   @id    // A chave primária é a matrícula
+  matricula           String   @id    
   horas_voadas        Int
   data_prox_mnt       DateTime
   fabricante          String
   modelo_anv          String
   disp_voo            Boolean
   num_hangar          Int
+}
+
+model Pessoa {
+  nome          String
+  data_nasc     DateTime
+  cpf           String  @id @db.Char(11) 
+  role          String
+  carteira_anac String? 
+  carteira_mec  String? 
+  salario       Decimal? @db.Decimal(7, 2) 
+  email         String  @unique 
+  senha         String
 }

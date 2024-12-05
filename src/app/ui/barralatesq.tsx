@@ -20,9 +20,9 @@ export default function BarraLatEsq() {
             </div>
             <div key="menus" className="h-full bg-sky-950 p-4 flex flex-col justify-between rounded-lg">
                 <div className="flex flex-col gap-4 text-2xl">
-                    <a href="/aviao/cadastrar-aviao">Cadastrar avião</a>
-                    <a href="/aviao/alterar-aviao">Alterar avião</a>
-                    <a href="/aviao/excluir-aviao">Excluir avião</a>
+                    <a href="/home">Home</a>
+                    <a href="/aviao">Avião</a>
+                    <a href="/usuarios">Usuário</a>
                 </div>
                 <Link href="/">
                     <div key="logout" className="flex items-end self-center">

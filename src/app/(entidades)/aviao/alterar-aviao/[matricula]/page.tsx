@@ -6,8 +6,8 @@ import BarraLatEsq from "../../../../ui/barralatesq";
 import BarraLatDir from "../../../../ui/barralatdir";
 
 export default function AlterarAviao() {
-    const { matricula } = useParams(); // Acessa `params` diretamente
-    const router = useRouter(); // Para navegação, se necessário
+    const { matricula } = useParams();
+    const router = useRouter();
 
     const [formData, setFormData] = useState({
         matricula: "",
@@ -57,7 +57,7 @@ export default function AlterarAviao() {
 
             if (response.ok) {
                 alert("Avião atualizado com sucesso!");
-                router.push("/aviao"); // Redireciona após atualização bem-sucedida
+                router.push("/aviao");
             } else {
                 alert("Erro ao atualizar o avião!");
             }
@@ -73,7 +73,6 @@ export default function AlterarAviao() {
             <div className="flex flex-col p-8 text-black w-3/5 h-5/6 items-center rounded-lg border bg-slate-200 justify-center">
                 <h1 className="self-start mb-4 text-lg font-bold">Alterar Avião</h1>
                 <form onSubmit={handleSubmit} className="w-full">
-                    {/* Matrícula - desabilitada para não ser editada */}
                     <div className="mb-4">
                         <label htmlFor="matricula" className="block text-gray-600">Matrícula</label>
                         <input
@@ -87,7 +86,6 @@ export default function AlterarAviao() {
                         />
                     </div>
 
-                    {/* Horas voadas */}
                     <div className="mb-4">
                         <label htmlFor="horas_voadas" className="block text-gray-600">Horas Voadas</label>
                         <input
@@ -100,7 +98,6 @@ export default function AlterarAviao() {
                         />
                     </div>
 
-                    {/* Data de próximo manutenção */}
                     <div className="mb-4">
                         <label htmlFor="data_prox_mnt" className="block text-gray-600">Data Próxima Manutenção</label>
                         <input
@@ -113,7 +110,6 @@ export default function AlterarAviao() {
                         />
                     </div>
 
-                    {/* Fabricante */}
                     <div className="mb-4">
                         <label htmlFor="fabricante" className="block text-gray-600">Fabricante</label>
                         <input
@@ -126,7 +122,6 @@ export default function AlterarAviao() {
                         />
                     </div>
 
-                    {/* Modelo do avião */}
                     <div className="mb-4">
                         <label htmlFor="modelo_anv" className="block text-gray-600">Modelo</label>
                         <input
@@ -139,7 +134,6 @@ export default function AlterarAviao() {
                         />
                     </div>
 
-                    {/* Disponibilidade para voo */}
                     <div className="mb-4">
                         <label className="block text-gray-600">Disponível para voo</label>
                         <div>
@@ -168,7 +162,6 @@ export default function AlterarAviao() {
                         </div>
                     </div>
 
-                    {/* Número do hangar */}
                     <div className="mb-4">
                         <label htmlFor="num_hangar" className="block text-gray-600">Número do Hangar</label>
                         <input
@@ -190,6 +183,7 @@ export default function AlterarAviao() {
                 </form>
             </div>
             <BarraLatDir />
+
         </main>
     );
 }
