@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { cpf } = req.query; // Pegando a matrícula da URL
+    const { cpf } = req.query;
 
     if (typeof cpf !== "string") {
         return res.status(400).json({ error: "CPF inválido." });
@@ -21,7 +21,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404).json({ error: "Usuário não encontrado." });
             }
 
-            // Excluindo o usuário do banco de dados
             await prisma.pessoa.delete({
                 where: { cpf },
             });
@@ -73,8 +72,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     senha: senha || usuarioExistente.senha,
                 },
             });
-
-
             res.status(200).json(usuarioAtualizado);
         } catch (error) {
             res.status(500).json({ error: "Erro ao atualizar o usuário." });
@@ -83,4 +80,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(405).json({ error: "Método não permitido." });
     }
 }
-

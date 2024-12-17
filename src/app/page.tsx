@@ -27,7 +27,6 @@ export default function Login() {
             }
 
             const data = await response.json();
-            alert("Login bem-sucedido!");
             router.push("/home");
         } catch (error) {
             console.error("Erro ao fazer login:", error);

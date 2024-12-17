@@ -4,19 +4,16 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-
-    // Método GET para listar aviões
     if (req.method === "GET") {
         try {
             const avioes = await prisma.aviao.findMany();
-            res.status(200).json(avioes); // Retorna todos os aviões
+            res.status(200).json(avioes);
         } catch (error) {
             console.error("Erro ao buscar aviões:", error);
             res.status(500).json({ error: "Erro ao buscar aviões no banco de dados." });
         }
     }
 
-    // Método POST para criar avião
     else if (req.method === "POST") {
         try {
             if (!req.body || typeof req.body !== "object") {

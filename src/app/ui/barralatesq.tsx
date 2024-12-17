@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+// puxar do BD o tipo de usuário
+// e mudar foto e nome de acordo
 export default function BarraLatEsq() {
     return (
         <div key="ble" className="h-full w-1/6 flex flex-col gap-2">
@@ -23,6 +25,8 @@ export default function BarraLatEsq() {
                     <a href="/home">Home</a>
                     <a href="/aviao">Avião</a>
                     <a href="/usuarios">Usuário</a>
+                    <a href="/curso">Curso</a>
+                    <a href="/modulo">Módulo</a>
                 </div>
                 <Link href="/">
                     <div key="logout" className="flex items-end self-center">

@@ -10,16 +10,18 @@ datasource db {
 model Aviao {
   matricula           String   @id    
   horas_voadas        Int
-  data_prox_mnt       DateTime
+  data_prox_mnt       DateTime @db.Date()
   fabricante          String
   modelo_anv          String
   disp_voo            Boolean
   num_hangar          Int
+
+  aulas               Aula[]   @relation("AulasAviao")
 }
 
 model Pessoa {
   nome          String
-  data_nasc     DateTime
+  data_nasc     DateTime @db.Date()
   cpf           String  @id @db.Char(11) 
   role          String
   carteira_anac String? 
@@ -27,4 +29,42 @@ model Pessoa {
   salario       Decimal? @db.Decimal(7, 2) 
   email         String  @unique 
   senha         String
+
+  aulas_aluno   Aula[] @relation("Aluno")
+  aulas_instrutor Aula[] @relation("Instrutor")
 }
+
+model Curso {
+  id_curso    Int     @id @default(autoincrement())
+  nome_curso  String
+
+  modulos     Modulo[]
+}
+
+model Modulo {
+  id_modulo   Int     @id @default(autoincrement())
+  id_curso    Int
+  tipo_modulo String
+
+  curso       Curso   @relation(fields: [id_curso], references: [id_curso])
+  aulas       Aula[]
+}
+
+model Aula {
+  id_aula     Int     @id @default(autoincrement())
+  dia_aula    DateTime @db.Date()
+  hora_inicio DateTime @db.Time()
+  hora_fim    DateTime @db.Time()
+  aviao_usado String
+  aluno       String   @db.Char(11)
+  instrutor   String?  @db.Char(11)
+  modulo      Int
+  nota        Int
+  freq_radio  Decimal  @db.Decimal(6,3)
+
+  mat_aviao   Aviao    @relation("AulasAviao", fields: [aviao_usado], references: [matricula])
+  cpf_aluno   Pessoa   @relation("Aluno", fields: [aluno], references: [cpf])
+  cpf_inst    Pessoa?  @relation("Instrutor", fields: [instrutor], references: [cpf])
+  id_modulo   Modulo   @relation(fields: [modulo], references: [id_modulo])
+}
+
