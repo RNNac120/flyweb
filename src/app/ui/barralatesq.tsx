@@ -17,7 +17,7 @@ export default function BarraLatEsq() {
                     className="rounded-full"
                 />
                 <div key="greeting" className="">
-                    <p>Olá, Celso!</p>
+                    <p>Bem vindo!</p>
                 </div>
             </div>
             <div key="menus" className="h-full bg-sky-950 p-4 flex flex-col justify-between rounded-lg">
@@ -27,6 +27,7 @@ export default function BarraLatEsq() {
                     <a href="/usuarios">Usuário</a>
                     <a href="/curso">Curso</a>
                     <a href="/modulo">Módulo</a>
+                    <a href="/aula">Aula</a>
                 </div>
                 <Link href="/">
                     <div key="logout" className="flex items-end self-center">

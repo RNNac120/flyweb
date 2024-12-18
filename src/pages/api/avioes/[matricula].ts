@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const { matricula } = req.query; // Pegando a matrícula da URL
+    const { matricula } = req.query;
 
     if (typeof matricula !== "string") {
         return res.status(400).json({ error: "Matrícula inválida." });

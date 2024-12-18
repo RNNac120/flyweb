@@ -7,7 +7,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const id_curso = Number(req.query.id_curso);
     console.log("ID do curso enviado:", id_curso);
 
-
     if (isNaN(id_curso)) {
         return res.status(400).json({ error: "ID inválido." });
     }
@@ -22,15 +21,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404).json({ error: "Curso não encontrado." });
             }
 
+            const modulos = await prisma.modulo.findMany({
+                where: { id_curso },
+                select: { id_modulo: true },
+            });
+
+            const idsModulos = modulos.map((modulo) => modulo.id_modulo);
+
+            if (idsModulos.length > 0) {
+                await prisma.aula.deleteMany({
+                    where: {
+                        modulo: { in: idsModulos },
+                    },
+                });
+            }
+
+            await prisma.modulo.deleteMany({
+                where: { id_curso },
+            });
+
             await prisma.curso.delete({
                 where: { id_curso },
             });
 
-            console.log("Curso excluído:", id_curso);
-            return res.status(200).json({ message: "Curso excluído com sucesso." });
+            console.log(`Curso ${id_curso} e seus módulos/aulas foram excluídos.`);
+            return res.status(200).json({ message: "Curso excluído com sucesso, incluindo módulos e aulas associadas." });
         }
 
-        // Método GET: Buscar um curso pelo ID
         else if (req.method === "GET") {
             const curso = await prisma.curso.findUnique({
                 where: { id_curso },
@@ -43,7 +60,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(200).json(curso);
         }
 
-        // Método PUT: Atualizar um curso pelo ID
         else if (req.method === "PUT") {
             const { nome_curso } = req.body;
 
@@ -68,7 +84,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(200).json(cursoAtualizado);
         }
 
-        // Resposta para métodos não suportados
         else {
             return res.status(405).json({ error: "Método não permitido." });
         }
@@ -77,3 +92,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(500).json({ error: "Erro interno no servidor." });
     }
 }
+

@@ -75,25 +75,40 @@ export default function Template() {
                         { name: "nome", label: "Nome" },
                         { name: "data_nasc", label: "Data de nascimento", type: "date" },
                         { name: "cpf", label: "CPF", type: "string" },
-                        { name: "role", label: "Cargo no Aeroclube" },
+                        { name: "role", label: "Cargo no Aeroclube", type: "select" },
                         { name: "carteira_anac", label: "Carteira ANAC" },
                         { name: "carteira_mec", label: "Carteira de Mecânico" },
                         { name: "salario", label: "Salário", type: "number" },
                         { name: "email", label: "E-mail" },
-                        { name: "senha", label: "Senha" },
+                        { name: "senha", label: "Senha", type: "password" },
                     ].map((field) => (
                         <div key={field.name} className="mb-4">
                             <label htmlFor={field.name} className="block text-gray-600">
                                 {field.label}
                             </label>
-                            <input
-                                type={field.type || "text"}
-                                id={field.name}
-                                name={field.name}
-                                value={formData[field.name]}
-                                onChange={handleInputChange}
-                                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                            />
+                            {field.type === "select" ? (
+                                <select
+                                    id={field.name}
+                                    name={field.name}
+                                    value={formData[field.name]}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                                >
+                                    <option value="">Selecione...</option>
+                                    <option value="Aluno">Aluno</option>
+                                    <option value="Instrutor">Instrutor</option>
+                                    <option value="Mecânico">Mecânico</option>
+                                </select>
+                            ) : (
+                                <input
+                                    type={field.type || "text"}
+                                    id={field.name}
+                                    name={field.name}
+                                    value={formData[field.name]}
+                                    onChange={handleInputChange}
+                                    className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+                                />
+                            )}
                         </div>
                     ))}
 
@@ -109,3 +124,4 @@ export default function Template() {
         </main>
     );
 }
+

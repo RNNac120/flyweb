@@ -31,7 +31,7 @@ export default function CadastrarCurso() {
             });
 
             if (response.ok) {
-                alert("Usuário cadastrado com sucesso!");
+                alert("Curso cadastrado com sucesso!");
                 setFormData({
                     nome_curso: "",
                     id_curso: "",

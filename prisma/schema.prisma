@@ -68,3 +68,4 @@ model Aula {
   id_modulo   Modulo   @relation(fields: [modulo], references: [id_modulo])
 }
 
+// depois colocar PessoaCurso, Manutencao

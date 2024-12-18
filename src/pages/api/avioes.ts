@@ -43,7 +43,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(400).json({ error: "Campos obrigatórios estão faltando." });
             }
 
-            // Criando o novo avião no banco de dados
             const novoAviao = await prisma.aviao.create({
                 data: {
                     matricula,
@@ -51,20 +50,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     data_prox_mnt: new Date(data_prox_mnt),
                     fabricante,
                     modelo_anv,
-                    disp_voo: disp_voo === true, // Convertendo para booleano
+                    disp_voo: disp_voo === true,
                     num_hangar: parseInt(num_hangar, 10),
                 },
             });
 
             console.log("Avião criado:", novoAviao);
 
-            res.status(201).json(novoAviao); // Certifique-se de retornar como JSON
+            res.status(201).json(novoAviao);
         } catch (error) {
             console.error("Erro ao criar o avião:", error);
             res.status(500).json({ error: "Erro ao criar o registro no banco de dados." });
         }
     }
-    // Método PUT para atualizar avião
     else if (req.method === "PUT") {
         try {
             const { matricula, horas_voadas, data_prox_mnt, fabricante, modelo_anv, disp_voo, num_hangar } = req.body;
@@ -81,7 +79,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404).json({ error: "Avião não encontrado." });
             }
 
-            // Atualizando os dados do avião no banco de dados
             const aviaoAtualizado = await prisma.aviao.update({
                 where: { matricula },
                 data: {
@@ -101,9 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(500).json({ error: "Erro ao atualizar o avião no banco de dados." });
         }
     }
-    // Método DELETE para excluir avião
     else if (req.method === "DELETE") {
-        // Lógica para excluir um avião
         try {
             const { matricula } = req.body;
 
@@ -119,7 +114,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 return res.status(404).json({ error: "Avião não encontrado." });
             }
 
-            // Excluindo o avião do banco de dados
             await prisma.aviao.delete({
                 where: { matricula },
             });
@@ -131,7 +125,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(500).json({ error: "Erro ao excluir o avião no banco de dados." });
         }
     }
-    // Resposta para métodos não permitidos
     else {
         res.status(405).json({ error: "Método não permitido." });
     }

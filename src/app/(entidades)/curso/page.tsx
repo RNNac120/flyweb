@@ -25,7 +25,7 @@ export default function ListarCursos() {
         const response = await fetch(`/api/cursos/${id_curso}`, { method: "DELETE" });
         if (response.ok) {
             alert("Curso excluído com sucesso!");
-            fetchCursos(); // Atualiza a lista
+            fetchCursos(); 
         } else {
             alert("Erro ao excluir o curso.");
         }
@@ -69,9 +69,10 @@ export default function ListarCursos() {
                                 <td className="border p-2 text-center">{curso.id_curso}</td>
                                 <td className="border p-2">{curso.nome_curso}</td>
                                 <td className="border p-2 flex justify-center gap-2">
-                                    <Link href={'/curso/alterar-curso/${curso.id_curso}'}>
+                                    <Link 
+                                        href={`/curso/alterar-curso/${curso.id_curso}`}
+                                    >
                                         <button
-                                            onClick={() => console.log("Redirecionar para Alterar")}
                                             className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600"
                                         >
                                             Alterar
@@ -89,13 +90,15 @@ export default function ListarCursos() {
                     </tbody>
                 </table>
 
+                <div className="flex self-center">
                 <Link href={'/curso/cadastrar-curso/'}>
-                    <button
-                        className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-700"
-                    >
-                        Inserir
-                    </button>
+                <button
+                className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-700"
+                >
+                Inserir
+                </button>
                 </Link>
+                </div>
             </div>
             <BarraLatDir />
         </main>

@@ -7,8 +7,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === "GET") {
         try {
-            const modulos = await prisma.modulo.findMany();
-            res.status(200).json(modulos);
+            const modulos = await prisma.modulo.findMany({
+                include: {
+                    curso: true, 
+                },
+            });
+
+            const resposta = modulos.map((modulo) => ({
+                id_modulo: modulo.id_modulo,
+                tipo_modulo: modulo.tipo_modulo,
+                id_curso: modulo.id_curso,
+                nome_curso: modulo.curso ? modulo.curso.nome_curso : "Curso não encontrado",
+            }));
+
+            res.status(200).json(resposta);
         } catch (error) {
             console.error("Erro ao buscar módulos.", error);
             res.status(500).json({ error: "Erro ao buscar módulos no banco de dados." });
@@ -29,7 +41,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             } = req.body;
 
             if (
-                !id_modulo ||
                 !id_curso ||
                 !tipo_modulo
             ) {
@@ -38,8 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             const novoModulo = await prisma.modulo.create({
                 data: {
-                    id_modulo: parseInt(id_modulo, 10),
-                    id_curso: parseInt(id_modulo, 10),
+                    id_curso: parseInt(id_curso, 10),
                     tipo_modulo,
                 },
             });
@@ -58,7 +68,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const { id_modulo, tipo_modulo } = req.body;
 
             if (!id_modulo) {
-                return res.status(400).json({ error: "Matrícula é obrigatória para atualização." });
+                return res.status(400).json({ error: "ID é obrigatório para atualização." });
             }
 
             const moduloExistente = await prisma.modulo.findUnique({
@@ -89,7 +99,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const { id_modulo } = req.body;
 
             if (!id_modulo) {
-                return res.status(400).json({ error: "Matrícula é obrigatória para exclusão." });
+                return res.status(400).json({ error: "ID é obrigatória para exclusão." });
             }
 
             const moduloExistente = await prisma.modulo.findUnique({

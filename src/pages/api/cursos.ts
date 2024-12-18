@@ -34,7 +34,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             const novoCurso = await prisma.curso.create({
                 data: {
-                    id_curso: parseInt(id_curso, 10),
                     nome_curso,
                 },
             });
