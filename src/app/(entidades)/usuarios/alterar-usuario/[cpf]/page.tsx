@@ -76,7 +76,7 @@ export default function AlterarUsuario() {
                             type="text"
                             id="nome"
                             name="nome"
-                            value={formData.nome}
+                            value={formData.nome || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />
@@ -88,7 +88,7 @@ export default function AlterarUsuario() {
                             type="date"
                             id="data_nasc"
                             name="data_nasc"
-                            value={formData.data_nasc}
+                            value={formData.data_nasc || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />
@@ -113,7 +113,7 @@ export default function AlterarUsuario() {
                             type="text"
                             id="role"
                             name="role"
-                            value={formData.role}
+                            value={formData.role || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />
@@ -125,7 +125,7 @@ export default function AlterarUsuario() {
                             type="text"
                             id="carteira_anac"
                             name="carteira_anac"
-                            value={formData.carteira_anac}
+                            value={formData.carteira_anac || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />
@@ -137,7 +137,7 @@ export default function AlterarUsuario() {
                             type="text"
                             id="carteira_mec"
                             name="carteira_mec"
-                            value={formData.carteira_mec}
+                            value={formData.carteira_mec || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />
@@ -149,7 +149,7 @@ export default function AlterarUsuario() {
                             type="number"
                             id="salario"
                             name="salario"
-                            value={formData.salario}
+                            value={formData.salario || ""}
                             onChange={handleInputChange}
                             placeholder="R$"
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
@@ -162,7 +162,7 @@ export default function AlterarUsuario() {
                             type="text"
                             id="email"
                             name="email"
-                            value={formData.email}
+                            value={formData.email || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />
@@ -174,7 +174,7 @@ export default function AlterarUsuario() {
                             type="password"
                             id="senha"
                             name="senha"
-                            value={formData.senha}
+                            value={formData.senha || ""}
                             onChange={handleInputChange}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
                         />

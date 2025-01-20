@@ -28,6 +28,8 @@ export default function BarraLatEsq() {
                     <a href="/curso">Curso</a>
                     <a href="/modulo">Módulo</a>
                     <a href="/aula">Aula</a>
+                    <a href="/competencia">Competência</a>
+                    <a href="/manutencao">Manutenção</a>
                 </div>
                 <Link href="/">
                     <div key="logout" className="flex items-end self-center">

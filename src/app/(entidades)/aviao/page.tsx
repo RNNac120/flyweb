@@ -44,6 +44,12 @@ export default function ExcluirAviao() {
         }
     };
 
+    // Função para formatar a data
+    const formatarData = (data: string) => {
+        const novaData = new Date(data);
+        return novaData.toLocaleDateString("pt-BR"); // Formato dia/mês/ano
+    };
+
     return (
         <main className="p-2 flex h-screen bg-sky-700 justify-between items-center">
             <BarraLatEsq />
@@ -59,39 +65,47 @@ export default function ExcluirAviao() {
                         className="flex-1 p-2 border rounded"
                     />
                 </div>
-                <ul className="w-full">
-                    {avioesFiltrados.map((aviao) => (
-                        <li key={aviao.matricula} className="mb-4 flex justify-between items-center">
-                            <span>{aviao.matricula}</span>
-                            <span>{aviao.fabricante}</span>
-                            <span>{aviao.data_prox_mnt}</span>
-                            <span>{aviao.disp_voo ? "Disponível" : "Indisponível"}</span>
-                            <div className="flex gap-4">
 
-                                <Link
-                                    href={`/aviao/alterar-aviao/${aviao.matricula}`}
-                                >
+                {/* Tabela de Aviões */}
+                <table className="w-full table-auto">
+                    <thead>
+                        <tr>
+                            <th className="border p-2 text-center">Matrícula</th>
+                            <th className="border p-2">Fabricante</th>
+                            <th className="border p-2 text-center">Data de Manutenção</th>
+                            <th className="border p-2 text-center">Disponibilidade</th>
+                            <th className="border p-2 text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {avioesFiltrados.map((aviao) => (
+                            <tr key={aviao.matricula}>
+                                <td className="border p-2 text-center">{aviao.matricula}</td>
+                                <td className="border p-2">{aviao.fabricante}</td>
+                                <td className="border p-2 text-center">{formatarData(aviao.data_prox_mnt)}</td>
+                                <td className="border p-2 text-center">
+                                    {aviao.disp_voo ? "Disponível" : "Indisponível"}
+                                </td>
+                                <td className="border p-2 text-center flex justify-center gap-2">
+                                    <Link href={`/aviao/alterar-aviao/${aviao.matricula}`}>
+                                        <button className="bg-blue-500 text-white py-1 px-2 rounded hover:bg-blue-600">
+                                            Alterar
+                                        </button>
+                                    </Link>
                                     <button
-                                        className="bg-amber-500 text-white py-1 px-4 rounded-md hover:bg-amber-700" >
-                                        Alterar
+                                        onClick={() => handleDelete(aviao.matricula)}
+                                        className="bg-red-500 text-white py-1 px-2 rounded hover:bg-red-600"
+                                    >
+                                        Excluir
                                     </button>
-                                </Link>
-                                <button
-                                    onClick={() => handleDelete(aviao.matricula)}
-                                    className="bg-red-500 text-white py-1 px-4 rounded-md hover:bg-red-600"
-                                >
-                                    Excluir
-                                </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
 
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-                <Link
-                    href={`/aviao/cadastrar-aviao/`}
-                >
-                    <button
-                        className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-700" >
+                <Link href={`/aviao/cadastrar-aviao/`}>
+                    <button className="bg-green-500 text-white py-1 px-4 rounded-md hover:bg-green-700">
                         Inserir
                     </button>
                 </Link>

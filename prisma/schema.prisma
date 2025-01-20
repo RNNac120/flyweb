@@ -17,6 +17,8 @@ model Aviao {
   num_hangar          Int
 
   aulas               Aula[]   @relation("AulasAviao")
+
+  manutencao          Manutencao[] @relation("MntAnv")
 }
 
 model Pessoa {
@@ -32,6 +34,8 @@ model Pessoa {
 
   aulas_aluno   Aula[] @relation("Aluno")
   aulas_instrutor Aula[] @relation("Instrutor")
+
+  manutencao Manutencao[] @relation("MntMec")
 }
 
 model Curso {
@@ -66,6 +70,29 @@ model Aula {
   cpf_aluno   Pessoa   @relation("Aluno", fields: [aluno], references: [cpf])
   cpf_inst    Pessoa?  @relation("Instrutor", fields: [instrutor], references: [cpf])
   id_modulo   Modulo   @relation(fields: [modulo], references: [id_modulo])
+
+  competencia Competencia[] @relation("CompAula")
+
 }
 
-// depois colocar PessoaCurso, Manutencao
+model Competencia {
+    tipo_comp String
+    id_comp Int @id @default(autoincrement())
+    nota Int
+    comentarios String
+    aula Int
+
+    comp_aula Aula @relation("CompAula", fields: [aula], references: [id_aula])
+}
+
+model Manutencao {
+  id_mnt Int @id @default(autoincrement())
+  mecanico String @db.Char(11)
+  aviao String
+  inicio_mnt DateTime @db.Date()
+  fim_mnt DateTime? @db.Date()
+  descricao String
+
+  cpf_mecanico Pessoa @relation("MntMec", fields: [mecanico], references: [cpf])
+  mat_aviao    Aviao  @relation("MntAnv", fields: [aviao], references: [matricula])
+}
