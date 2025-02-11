@@ -1,45 +1,103 @@
-"use client";
+"use client"
 
-import Image from "next/image";
-import Link from "next/link";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useState, useEffect } from "react"
+import { LogOut } from "lucide-react"
 
-// puxar do BD o tipo de usuário
-// e mudar foto e nome de acordo
-export default function BarraLatEsq() {
+const menuItems = {
+    aluno: [
+        { label: "Página Inicial", href: "/home" },
+        { label: "Voos", href: "/pages/aluno/voos" },
+        { label: "Desempenho", href: "/pages/aluno/desempenho" },
+        { label: "Manuais", href: "/pages/aluno/manuais" },
+    ],
+    instrutor: [
+        { label: "Página Inicial", href: "/home" },
+        { label: "Voos Anteriores", href: "/pages/instrutor/voos-anteriores" },
+        { label: "Marcar Voo", href: "/pages/instrutor/marcar-voo" },
+        { label: "Manuais", href: "/pages/instrutor/manuais" },
+        { label: "Dar Nota de Voo", href: "/pages/instrutor/dar-nota" },
+    ],
+    mecanico: [
+        { label: "Página Inicial", href: "/home" },
+        { label: "Aviões", href: "/pages/mecanico/avioes" },
+        { label: "Marcar Manutenção", href: "/pages/mecanico/marcar-manutencao" },
+        { label: "Manuais", href: "/pages/mecanico/manuais" },
+    ],
+    admin: [
+        { label: "Usuários", href: "/usuarios" },
+        { label: "Aviões", href: "/aviao" },
+        { label: "Cursos", href: "/curso" },
+        { label: "Módulos", href: "/modulo" },
+        { label: "Aulas", href: "/aula" },
+        { label: "Manutenções", href: "/manutencao" },
+        { label: "Competências", href: "/competencia" },
+    ],
+}
+
+export default function BarraLatEsq({ userRole }: { userRole: string }) {
+    const pathname = usePathname()
+    const [isOpen, setIsOpen] = useState(true)
+    const [currentRole, setCurrentRole] = useState(userRole)
+
+    useEffect(() => {
+        const storedRole = localStorage.getItem("userRole")
+        if (storedRole) {
+            setCurrentRole(storedRole.toLowerCase())
+        }
+    }, [])
+
+    const toggleSidebar = () => {
+        setIsOpen(!isOpen)
+    }
+
+    const handleLogout = () => {
+        localStorage.removeItem("userRole")
+        localStorage.removeItem("userCpf")
+        window.location.href = "/"
+    }
+
     return (
-        <div key="ble" className="h-full w-1/6 flex flex-col gap-2">
-            <div key="user" className="bg-sky-950 p-4 flex gap-8 rounded-lg items-center">
-                <Image
-                    src="/celso_piloto.png"
-                    alt="Foto do aluno"
-                    width={64}
-                    height={64}
-                    className="rounded-full"
-                />
-                <div key="greeting" className="">
-                    <p>Bem vindo!</p>
+        <div
+            className={`bg-sky-950 text-white h-full transition-all duration-300 ${isOpen ? "w-64" : "w-16"
+                } flex flex-col justify-between`}
+        >
+            <div>
+                <div className="p-4 flex items-center justify-between">
+                    <h2 className={`font-bold text-xl ${isOpen ? "block" : "hidden"}`}>FlyWeb</h2>
+                    <button onClick={toggleSidebar} className="text-white focus:outline-none">
+                        {isOpen ? "←" : "→"}
+                    </button>
                 </div>
+                <nav className="mt-6">
+                    <ul>
+                        {menuItems[currentRole as keyof typeof menuItems]?.map((item, index) => (
+                            <li key={index} className="mb-2">
+                                <Link
+                                    href={item.href}
+                                    className={`flex items-center p-2 hover:bg-sky-800 ${pathname === item.href ? "bg-sky-800" : ""}`}
+                                >
+                                    <span className={isOpen ? "block" : "hidden"}>{item.label}</span>
+                                    {!isOpen && <span className="block w-full text-center">{item.label[0]}</span>}
+                                </Link>
+                            </li>
+                        ))}
+                    </ul>
+                </nav>
             </div>
-            <div key="menus" className="h-full bg-sky-950 p-4 flex flex-col justify-between rounded-lg">
-                <div className="flex flex-col gap-4 text-2xl">
-                    <a href="/home">Home</a>
-                    <a href="/aviao">Avião</a>
-                    <a href="/usuarios">Usuário</a>
-                    <a href="/curso">Curso</a>
-                    <a href="/modulo">Módulo</a>
-                    <a href="/aula">Aula</a>
-                    <a href="/competencia">Competência</a>
-                    <a href="/manutencao">Manutenção</a>
-                </div>
-                <Link href="/">
-                    <div key="logout" className="flex items-end self-center">
-                        <button className="rounded-full bg-red-600 px-6 py-2">
-                            SAIR X
-                        </button>
-                    </div>
-                </Link>
+            <div className="p-4">
+                <button
+                    onClick={handleLogout}
+                    className={`flex items-center justify-center w-full p-2 bg-red-600 hover:bg-red-700 rounded ${isOpen ? "px-4" : "px-2"
+                        }`}
+                >
+                    <LogOut size={20} />
+                    {isOpen && <span className="ml-2">Logout</span>}
+                </button>
             </div>
         </div>
-    );
+    )
 }
+
 

@@ -1,20 +1,31 @@
-"use client";
+"use client"
 
-import BarraLatEsq from "../ui/barralatesq";
-import BarraLatDir from "../ui/barralatdir";
-import Meio from "../ui/meio";
+import { useEffect, useState } from "react"
+import BarraLatEsq from "../ui/barralatesq"
+import BarraLatDir from "../ui/barralatdir"
+import Meio from "../ui/meio"
 
 export default function Home() {
+    const [userRole, setUserRole] = useState<string | null>(null)
+
+    useEffect(() => {
+        const role = localStorage.getItem("userRole")
+        if (role) {
+            setUserRole(role.toLowerCase())
+        }
+    }, [])
+
+    if (!userRole) {
+        return <div>Loading...</div>
+    }
+
     return (
         <main className="p-2 flex h-screen bg-sky-700 justify-between items-center">
-            <BarraLatEsq />
+            <BarraLatEsq userRole={userRole} />
             <Meio />
-            <BarraLatDir />
+            <BarraLatDir userRole={userRole} />
         </main>
-    );
+    )
 }
 
 
-// logar -- credenciais -- role
-// de acordo com seu role, joga esse role pra variavel entidade
-// e isso carrega a pagina de acordo com o role do usuario

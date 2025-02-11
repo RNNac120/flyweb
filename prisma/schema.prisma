@@ -7,92 +7,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Aviao {
-  matricula           String   @id    
-  horas_voadas        Int
-  data_prox_mnt       DateTime @db.Date()
-  fabricante          String
-  modelo_anv          String
-  disp_voo            Boolean
-  num_hangar          Int
-
-  aulas               Aula[]   @relation("AulasAviao")
-
-  manutencao          Manutencao[] @relation("MntAnv")
+model Pessoa {
+  cpf           String   @id
+  nome          String
+  data_nasc     DateTime
+  role          String
+  carteira_anac String?
+  carteira_mec  String?
+  salario       Float?
+  email         String   @unique
+  senha         String
+  aulas_aluno   Aula[]   @relation("AlunoAula")
+  aulas_inst    Aula[]   @relation("InstrutorAula")
+  manutencoes   Manutencao[]
 }
 
-model Pessoa {
-  nome          String
-  data_nasc     DateTime @db.Date()
-  cpf           String  @id @db.Char(11) 
-  role          String
-  carteira_anac String? 
-  carteira_mec  String? 
-  salario       Decimal? @db.Decimal(7, 2) 
-  email         String  @unique 
-  senha         String
-
-  aulas_aluno   Aula[] @relation("Aluno")
-  aulas_instrutor Aula[] @relation("Instrutor")
-
-  manutencao Manutencao[] @relation("MntMec")
+model Aviao {
+  matricula     String   @id
+  horas_voadas  Int
+  data_prox_mnt DateTime
+  fabricante    String
+  modelo_anv    String
+  disp_voo      Boolean
+  num_hangar    Int
+  aulas         Aula[]
+  manutencoes   Manutencao[]
 }
 
 model Curso {
-  id_curso    Int     @id @default(autoincrement())
-  nome_curso  String
-
-  modulos     Modulo[]
+  id_curso   Int      @id @default(autoincrement())
+  nome_curso String
+  modulos    Modulo[]
 }
 
 model Modulo {
-  id_modulo   Int     @id @default(autoincrement())
-  id_curso    Int
+  id_modulo   Int    @id @default(autoincrement())
   tipo_modulo String
-
-  curso       Curso   @relation(fields: [id_curso], references: [id_curso])
+  id_curso    Int
+  curso       Curso  @relation(fields: [id_curso], references: [id_curso])
   aulas       Aula[]
 }
 
 model Aula {
-  id_aula     Int     @id @default(autoincrement())
-  dia_aula    DateTime @db.Date()
-  hora_inicio DateTime @db.Time()
-  hora_fim    DateTime @db.Time()
+  id_aula     Int      @id @default(autoincrement())
+  dia_aula    DateTime
+  hora_inicio DateTime
+  hora_fim    DateTime
   aviao_usado String
-  aluno       String   @db.Char(11)
-  instrutor   String?  @db.Char(11)
+  aluno       String
+  instrutor   String?
   modulo      Int
-  nota        Int
-  freq_radio  Decimal  @db.Decimal(6,3)
-
-  mat_aviao   Aviao    @relation("AulasAviao", fields: [aviao_usado], references: [matricula])
-  cpf_aluno   Pessoa   @relation("Aluno", fields: [aluno], references: [cpf])
-  cpf_inst    Pessoa?  @relation("Instrutor", fields: [instrutor], references: [cpf])
+  nota        Int?
+  freq_radio  Float?
+  status      String   @default("indisponivel")
+  mat_aviao   Aviao    @relation(fields: [aviao_usado], references: [matricula])
+  cpf_aluno   Pessoa   @relation("AlunoAula", fields: [aluno], references: [cpf])
+  cpf_inst    Pessoa?  @relation("InstrutorAula", fields: [instrutor], references: [cpf])
   id_modulo   Modulo   @relation(fields: [modulo], references: [id_modulo])
-
-  competencia Competencia[] @relation("CompAula")
-
+  competencias Competencia[]
 }
 
 model Competencia {
-    tipo_comp String
-    id_comp Int @id @default(autoincrement())
-    nota Int
-    comentarios String
-    aula Int
-
-    comp_aula Aula @relation("CompAula", fields: [aula], references: [id_aula])
+  id_comp     Int    @id @default(autoincrement())
+  tipo_comp   String
+  nota        Int
+  comentarios String?
+  aula        Int
+  comp_aula   Aula   @relation(fields: [aula], references: [id_aula])
 }
 
 model Manutencao {
-  id_mnt Int @id @default(autoincrement())
-  mecanico String @db.Char(11)
-  aviao String
-  inicio_mnt DateTime @db.Date()
-  fim_mnt DateTime? @db.Date()
-  descricao String
-
-  cpf_mecanico Pessoa @relation("MntMec", fields: [mecanico], references: [cpf])
-  mat_aviao    Aviao  @relation("MntAnv", fields: [aviao], references: [matricula])
+  id_mnt      Int      @id @default(autoincrement())
+  inicio_mnt  DateTime
+  fim_mnt     DateTime?
+  descricao   String
+  aviao       String
+  mecanico    String
+  mat_aviao   Aviao    @relation(fields: [aviao], references: [matricula])
+  cpf_mec     Pessoa   @relation(fields: [mecanico], references: [cpf])
 }
+
+

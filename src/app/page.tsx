@@ -1,38 +1,41 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 export default function Login() {
-    const [cpf, setCpf] = useState("");
-    const [senha, setSenha] = useState("");
-    const [error, setError] = useState("");
-    const router = useRouter();
+    const [cpf, setCpf] = useState("")
+    const [senha, setSenha] = useState("")
+    const [error, setError] = useState("")
+    const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+        e.preventDefault()
 
         try {
             const response = await fetch("/api/login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ cpf, senha }),
-            });
+            })
 
             if (!response.ok) {
-                const data = await response.json();
-                setError(data.error || "Erro desconhecido.");
-                return;
+                const data = await response.json()
+                setError(data.error || "Erro desconhecido.")
+                return
             }
 
-            const data = await response.json();
-            router.push("/home");
+            const data = await response.json()
+            // Store the user's role and CPF in localStorage
+            localStorage.setItem("userRole", data.usuario.role)
+            localStorage.setItem("userCpf", data.usuario.cpf)
+            router.push("/home")
         } catch (error) {
-            console.error("Erro ao fazer login:", error);
-            setError("Erro ao conectar ao servidor.");
+            console.error("Erro ao fazer login:", error)
+            setError("Erro ao conectar ao servidor.")
         }
-    };
+    }
 
     return (
         <body className="flex flex-col min-h-screen bg-slate-50 dark:bg-sky-900 justify-between">
@@ -49,7 +52,10 @@ export default function Login() {
             </header>
 
             <main className="min-h-fit place-content-center my-20">
-                <div id="login-container" className="shadow-xl mx-auto w-7/12 bg-sky-200 rounded-lg flex flex-row min-w-80 shadow-lg">
+                <div
+                    id="login-container"
+                    className="shadow-xl mx-auto w-7/12 bg-sky-200 rounded-lg flex flex-row min-w-80 shadow-lg"
+                >
                     <section id="imagem" className="flex shrink-0 w-[500px] hidden xl:block">
                         <Image
                             className="self-start max-w-2xl rounded-l-lg"
@@ -68,7 +74,9 @@ export default function Login() {
                         </div>
                         <form onSubmit={handleSubmit}>
                             <div className="mb-4">
-                                <label htmlFor="cpf" className="block text-gray-600">CPF</label>
+                                <label htmlFor="cpf" className="block text-gray-600">
+                                    CPF
+                                </label>
                                 <input
                                     type="text"
                                     id="cpf"
@@ -79,7 +87,9 @@ export default function Login() {
                                 />
                             </div>
                             <div className="mb-4">
-                                <label htmlFor="senha" className="block text-gray-600">Senha</label>
+                                <label htmlFor="senha" className="block text-gray-600">
+                                    Senha
+                                </label>
                                 <input
                                     type="password"
                                     id="senha"
@@ -107,19 +117,27 @@ export default function Login() {
                         <Image src="/pin_endereco.svg" height={48} width={48} alt="Pin de endereço" />
                     </div>
                     <address className="flex flex-col">
-                        <h2><strong>FlyWeb®</strong> Escola de Aviação</h2>
-                        Avenida do Aeroporto, 175<br />
-                        Bairro, São João del-Rei - MG<br />
+                        <h2>
+                            <strong>FlyWeb®</strong> Escola de Aviação
+                        </h2>
+                        Avenida do Aeroporto, 175
+                        <br />
+                        Bairro, São João del-Rei - MG
+                        <br />
                     </address>
                 </div>
                 <div id="footer-two" className="flex flex-col justify-center flex-start">
-                    <div>E-mail: <a href="https://www.google.com">secretaria@flyweb.com.br</a><br /></div>
+                    <div>
+                        E-mail: <a href="https://www.google.com">secretaria@flyweb.com.br</a>
+                        <br />
+                    </div>
                     <div>
                         Telefone: <a>(32) 3333-3031</a>
                     </div>
                 </div>
             </footer>
         </body>
-    );
+    )
 }
+
 
