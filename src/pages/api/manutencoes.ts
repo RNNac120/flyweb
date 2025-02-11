@@ -17,7 +17,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             const mecanicoExiste = await prisma.pessoa.findFirst({
                 where: {
                     cpf: mecanico,
-                    role: "Mecânico",
+                    role: "mecanico",
                 },
             })
 
@@ -65,12 +65,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             return res.status(200).json(manutencaoAtualizada)
         } catch (error) {
-            console.error("Erro ao atualizar manutenção:", error)
+            console.error("Erro ao atualizar manutenç  o:", error)
             return res.status(500).json({ error: "Erro ao atualizar manutenção" })
         }
     }
 
     return res.status(405).json({ error: "Método não permitido" })
 }
-
-

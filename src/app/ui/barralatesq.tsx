@@ -10,20 +10,17 @@ const menuItems = {
         { label: "Página Inicial", href: "/home" },
         { label: "Voos", href: "/pages/aluno/voos" },
         { label: "Desempenho", href: "/pages/aluno/desempenho" },
-        { label: "Manuais", href: "/pages/aluno/manuais" },
     ],
     instrutor: [
         { label: "Página Inicial", href: "/home" },
         { label: "Voos Anteriores", href: "/pages/instrutor/voos-anteriores" },
         { label: "Marcar Voo", href: "/pages/instrutor/marcar-voo" },
-        { label: "Manuais", href: "/pages/instrutor/manuais" },
         { label: "Dar Nota de Voo", href: "/pages/instrutor/dar-nota" },
     ],
     mecanico: [
         { label: "Página Inicial", href: "/home" },
         { label: "Aviões", href: "/pages/mecanico/avioes" },
         { label: "Marcar Manutenção", href: "/pages/mecanico/marcar-manutencao" },
-        { label: "Manuais", href: "/pages/mecanico/manuais" },
     ],
     admin: [
         { label: "Usuários", href: "/usuarios" },
@@ -48,10 +45,6 @@ export default function BarraLatEsq({ userRole }: { userRole: string }) {
         }
     }, [])
 
-    const toggleSidebar = () => {
-        setIsOpen(!isOpen)
-    }
-
     const handleLogout = () => {
         localStorage.removeItem("userRole")
         localStorage.removeItem("userCpf")
@@ -59,16 +52,10 @@ export default function BarraLatEsq({ userRole }: { userRole: string }) {
     }
 
     return (
-        <div
-            className={`bg-sky-950 text-white h-full transition-all duration-300 ${isOpen ? "w-64" : "w-16"
-                } flex flex-col justify-between`}
-        >
+        <div className={"bg-sky-950 text-white h-full w-64 flex flex-col justify-between"}>
             <div>
                 <div className="p-4 flex items-center justify-between">
                     <h2 className={`font-bold text-xl ${isOpen ? "block" : "hidden"}`}>FlyWeb</h2>
-                    <button onClick={toggleSidebar} className="text-white focus:outline-none">
-                        {isOpen ? "←" : "→"}
-                    </button>
                 </div>
                 <nav className="mt-6">
                     <ul>
@@ -99,5 +86,3 @@ export default function BarraLatEsq({ userRole }: { userRole: string }) {
         </div>
     )
 }
-
-

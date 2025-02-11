@@ -6,7 +6,7 @@ import BarraLatDir from "@/app/ui/barralatdir"
 
 interface Aviao {
     matricula: string
-    modelo: string
+    modelo_anv: string
 }
 
 export default function MarcarManutencao() {
@@ -56,7 +56,7 @@ export default function MarcarManutencao() {
                 },
                 body: JSON.stringify({
                     ...formData,
-                    mecanico: mecanicoCpf, // Add mechanic's CPF
+                    mecanico: mecanicoCpf,
                 }),
             })
 
@@ -103,7 +103,7 @@ export default function MarcarManutencao() {
                             <option value="">Selecione um avião</option>
                             {avioes.map((aviao) => (
                                 <option key={aviao.matricula} value={aviao.matricula}>
-                                    {aviao.modelo} - {aviao.matricula}
+                                    {aviao.modelo_anv} - {aviao.matricula}
                                 </option>
                             ))}
                         </select>
@@ -133,7 +133,6 @@ export default function MarcarManutencao() {
                             value={formData.dataFim}
                             onChange={handleInputChange}
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                            required
                         />
                     </div>
                     <div className="mb-4">
@@ -162,5 +161,3 @@ export default function MarcarManutencao() {
         </main>
     )
 }
-
-

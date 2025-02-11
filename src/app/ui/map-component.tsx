@@ -40,5 +40,3 @@ export default function MapComponent({ posix, zoom = defaults.zoom }: MapProps) 
         </MapContainer>
     )
 }
-
-

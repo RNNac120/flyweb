@@ -22,7 +22,7 @@ export default function BarraLatDir({ userRole }: { userRole: string }) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const avioesRes = await fetch("/api/avioes")
+                const avioesRes = await fetch("/api/barradireitafunciona")
                 const avioesData = await avioesRes.json()
                 setAvioes(avioesData)
 
@@ -84,5 +84,3 @@ export default function BarraLatDir({ userRole }: { userRole: string }) {
         </div>
     )
 }
-
-

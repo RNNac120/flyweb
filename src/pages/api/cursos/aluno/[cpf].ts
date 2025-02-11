@@ -7,8 +7,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === "GET") {
         try {
             const { cpf } = req.query
-
-            // Get student's courses
             const cursos = await prisma.curso.findMany({
                 include: {
                     modulos: {
@@ -40,5 +38,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         res.status(405).json({ error: "Método não permitido." })
     }
 }
-
-

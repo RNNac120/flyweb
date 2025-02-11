@@ -84,5 +84,3 @@ export default function VoosAluno() {
         </main>
     )
 }
-
-
